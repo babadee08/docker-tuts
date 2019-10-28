@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  product-service:
+    container_name: python-product-service
+    build: ./product
+    volumes:
+      - ./product:/usr/src/app
+    ports:
+      - 5001:80
+
+  website:
+    container_name: php-product-consumer
+    image: php:apache
+    volumes:
+      - ./website:/var/www/html
+    ports:
+      - 5000:80
+    depends_on:
+      - product-service
+
+networks:
+  default:
+    external:
+      name: clane-docker_main_network
